@@ -1,0 +1,32 @@
+/* navbar  */
+
+.navbar-brand img{
+    height: 70px;
+}
+.navbar{
+    z-index: 100;
+    background-color: #191919;
+    opacity: 0.85;
+}
+/* //navbar */
+
+.pricing-header{
+    margin-top: 80px;
+}
+
+.card-title{
+    font-size: 40px;
+    margin-bottom: 30px;
+}
+
+.header,.info{
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+
+
+@media screen and (max-width: 414px){
+    .navbar-brand img{
+        height: 50px;
+    }
+}
