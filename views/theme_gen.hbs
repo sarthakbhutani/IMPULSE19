@@ -1,0 +1,193 @@
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../images/latestimpulselogo.jpg">
+
+    <title>Impulse'18 </title>
+	 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Raleway:400,500,700" rel="stylesheet"> 
+    <link rel="stylesheet" href="../css/jquery.slotmachine.css">
+    <link href="../css/profile.css" rel="stylesheet">
+    
+    <style>
+        .randomizeMachine{
+            text-align: center;
+            height: 60px;
+        }
+
+        .randomizeMachine > div{
+            font-size: 40px;
+            font-family: 'Raleway', sans-serif;
+            color: rgb(8, 90, 184);
+            text-transform: uppercase;
+        }
+        .row{
+            position: relative;
+            margin-bottom: 30px;
+        }
+        #randomize{
+            position: absolute;
+            left: 45%;
+        }
+
+        h1{
+            display: block;
+            margin: auto;
+            margin-top: 100px;
+            text-align: center;
+            font-family: 'Raleway', sans-serif;
+            font-size: 50px;
+            margin-bottom: 30px;
+        }
+        .subtext, .hidden{
+            text-align: center;
+            color: rgb(175, 49, 49);
+            font-size: 20px;
+            margin-bottom: 50px;
+        }
+        .hidden{
+            display: none;
+        }
+
+        /* @media screen and (min-width: 992px){
+            .randomizeMachine > div{
+            font-size: 40px;
+            
+        }
+        .randomizeMachine{
+            height: 60px;
+        }
+        }
+        
+        @media screen and (max-width: 991px){
+            .randomizeMachine > div{
+            font-size: 35px;
+            
+        }
+        .randomizeMachine{
+            height: 40px;
+        }
+        }
+
+        @media screen and (max-width: 767px){
+            .randomizeMachine > div{
+            font-size: 30px;
+            
+        }
+        .randomizeMachine{
+            height: 35px;
+        }
+        } */
+    </style>
+  </head>
+
+  <body>
+
+<nav class="navbar navbar-expand-lg fixed-top">
+	<a class="navbar-brand" href="#"><img src="/images/impulse-full.png" alt="logo"></a>
+    <a class="btn btn-outline-danger ml-auto" href="/">Go Back</a>
+</nav>
+
+    <div class="container">
+        <h1>Generate Your Themes</h1>
+        <p class="subtext" id = "teamname">WELCOME, {{team}}</p>
+        <p class="subtext">Your project idea should incorporate both the keywords generated.</p>
+
+        <div class="slot">
+            <div class="row">
+                <div class="col-md-6 col-sm-12 col-12">
+                    <div>
+						<div id="machine1" class="randomizeMachine">
+						</div>
+					</div>
+                </div>
+                <div class="col-md-6 col-sm-12 col-12">
+                    <div>
+                        <div id="machine2" class="randomizeMachine">
+                        </div>
+					</div>
+                </div>
+            </div>
+
+            <button class="btn btn-success" id="randomize">GENERATE</button>
+            <br><br>
+            <p class="hidden">Your topics have been recorded. Submit your ideas before 8 March 12 noon. Get Coding!</p>
+        </div>
+    </div>
+
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/jquery.slotmachine.js"></script>
+    <script>
+        $(document).ready(function(){
+            var array1 = ['WASTE','RURAL', 'HEALTH', 'SMART', 'ENVIRONMENT', 'FOOD', 'DATA']
+            var array2 = ['COMMUNICATION','SECURITY', 'INTERNET', 'GREEN', 'EDUCATION', 'FARMER', 'ENERGY']
+
+            for(let i = 0; i<array1.length; i++){
+                $('#machine1').append('<div>'+array1[i]+'</div>')
+            }
+            for(let i = 0; i<array2.length; i++){
+                $('#machine2').append('<div>'+array2[i]+'</div>')
+            }
+        })
+    </script>
+    <script>
+        var theme1,theme2;
+        var array1 = ['WASTE','RURAL', 'HEALTH', 'SMART', 'ENVIRONMENT', 'FOOD', 'DATA']
+        var array2 = ['COMMUNICATION','SECURITY', 'INTERNET', 'GREEN', 'EDUCATION', 'FARMER', 'ENERGY']
+        $(document).ready(function(){
+            var machine1 = $('#machine1').slotMachine({
+                active : 0,
+                delay  : 500
+            });
+            var machine2 = $('#machine2').slotMachine({
+                active  :0,
+                delay   : 500
+            });
+
+            function onComplete(active){
+                switch(this.element[0].id){
+                    case 'machine1':
+                    theme1 = array1[this.active];
+                    
+                     //console.log(theme1);
+                        
+                        break;
+                    case 'machine2':
+                    theme2 = array2[this.active]
+                    //console.log(theme2);
+                     break;
+                }
+            }
+        var team = "{{team}}";
+        console.log(team);
+        $('#randomize').click(function(){
+
+            machine1.shuffle(5,onComplete);
+            machine2.shuffle(5,onComplete);
+            $(this).fadeOut('slow');
+            
+            setTimeout( function(){
+                $.ajax({
+                type: 'POST',
+                url: '/theme',
+                data: { THEME1: theme1, THEME2: theme2,TEAMNAME: team },
+       					//	data: JSON.stringify(data),
+                success: function(data){
+                    $('.hidden').fadeIn('fast')
+                },
+                error: function(xhr, status){
+                    window.location.assign('/error')
+                }
+                });
+            },4000)
+                })
+                })
+    </script>
+  </body>
+</html>
