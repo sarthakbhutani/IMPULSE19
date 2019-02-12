@@ -1,4 +1,4 @@
-var endDate = new Date("2019/3/28");
+var endDate = new Date("2019/4/12");
 var distance;
 var day = document.querySelector('.timer-day');
 var hour = document.querySelector('.timer-hour');
