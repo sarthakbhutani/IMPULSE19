@@ -19,7 +19,6 @@
   "homepage": "https://github.com/sidkathuria14/Impulse18Website#readme",
   "dependencies": {
     "alert-node": "^1.0.2",
-    "bcrypt": "^1.0.3",
     "body-parser": "^1.18.2",
     "connect-mongo": "^2.0.1",
     "express": "^4.16.2",
